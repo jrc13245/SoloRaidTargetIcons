@@ -52,9 +52,12 @@ local Original_UnitPopup_HideButtons = UnitPopup_HideButtons
 UnitPopup_HideButtons = function()
     if IsOpeningDropdownForTargetUnitFrame() and not IsPlayerInPartyOrRaid() then
         AddPlayerToFakeParty()
+        local ok, err = pcall(Original_UnitPopup_HideButtons)
+        RemovePlayerFromFakeParty()
+        if not ok then error(err, 0) end
+    else
+        Original_UnitPopup_HideButtons()
     end
-    Original_UnitPopup_HideButtons()
-    RemovePlayerFromFakeParty()
 end
 
 -- Automatically inject SuperWoW's "local target icon" feature flag when other
